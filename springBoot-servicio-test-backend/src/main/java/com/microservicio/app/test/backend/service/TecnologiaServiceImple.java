@@ -3,12 +3,14 @@ package com.microservicio.app.test.backend.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.microservicio.app.test.backend.dto.TecnologiaDto;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 import com.microservicio.app.test.backend.repository.TecnologiaRepository;
 
@@ -19,20 +21,23 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	private TecnologiaRepository repo;
 
 	@Override
-	public List<Tecnologia> findAll() {
+	public List<TecnologiaDto> findAll() {
 
-		return repo.findAll();
+		List<Tecnologia> tecnologias = repo.findAll();
+		return tecnologias.stream().map(t -> new TecnologiaDto(t.getNombre(),t.getVersion())).collect(Collectors.toList()); 
+
 	}
 
 	@Override
-	public Tecnologia findByNombre(String nombre) {
+	public TecnologiaDto findByNombre(String nombre) {
 
-		Optional<Tecnologia> opt = repo.findByNombre(nombre);
-		if (opt.isEmpty()) {
+		Optional<TecnologiaDto> tecnologia = repo.findByNombre(nombre).map(t -> new TecnologiaDto(t.getNombre(), t.getVersion()));
+		if (tecnologia.isEmpty()) {
 			throw new NoSuchElementException("No existe tecnologia con el nombre: " + nombre);
 		}
 
-		return opt.get();
+		return tecnologia.get();
+
 	}
 
 	@Override

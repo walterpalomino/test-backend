@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.microservicio.app.test.backend.dto.TecnologiaDto;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 import com.microservicio.app.test.backend.exception.InvalidDataException;
 import com.microservicio.app.test.backend.service.TecnologiaService;
@@ -29,14 +30,14 @@ public class TecnologiaController {
 	TecnologiaService servicio;
 	
 	@GetMapping("/listado")
-	private ResponseEntity<List<Tecnologia>> listaTecnologia()
+	private ResponseEntity<List<TecnologiaDto>> listaTecnologia()
 	{
 			return ResponseEntity.ok(servicio.findAll());
 		
 	}
 	
 	@GetMapping("/buscar/{nombre}")
-	private ResponseEntity<Tecnologia> budcarTecnologia(@PathVariable String nombre)
+	private ResponseEntity<TecnologiaDto> budcarTecnologia(@PathVariable String nombre)
 	{
 		return ResponseEntity.ok(servicio.findByNombre(nombre));
 	}
