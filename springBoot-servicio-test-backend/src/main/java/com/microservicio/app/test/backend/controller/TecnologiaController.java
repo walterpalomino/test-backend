@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.microservicio.app.test.backend.dto.TecnologiaCrearDto;
 import com.microservicio.app.test.backend.dto.TecnologiaDto;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 import com.microservicio.app.test.backend.exception.InvalidDataException;
@@ -32,8 +33,7 @@ public class TecnologiaController {
 	@GetMapping("/listado")
 	private ResponseEntity<List<TecnologiaDto>> listaTecnologia()
 	{
-			return ResponseEntity.ok(servicio.findAll());
-		
+			return ResponseEntity.ok(servicio.findAll());		
 	}
 	
 	@GetMapping("/buscar/{nombre}")
@@ -43,18 +43,18 @@ public class TecnologiaController {
 	}
 	
 	@PostMapping("/crear-tecnologia")
-	private ResponseEntity<Tecnologia> agregarTecnologia(@Valid @RequestBody Tecnologia t, BindingResult result)
+	private ResponseEntity<TecnologiaDto> agregarTecnologia(@Valid @RequestBody TecnologiaCrearDto t, BindingResult result)
 	{		
 		if(result.hasErrors())
 		{
 			throw new InvalidDataException(result);
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body(servicio.addTecnologia(t));
+		return null;// ResponseEntity.status(HttpStatus.CREATED).body(servicio.addTecnologia(t));
 		
 	}
 	
 	@PutMapping("/actualizar-tecnologia/{id}")
-	private ResponseEntity<Tecnologia> actualizarTecnologia(@Valid @PathVariable Long id, @RequestBody Tecnologia t, BindingResult result)
+	private ResponseEntity<TecnologiaDto> actualizarTecnologia(@Valid @PathVariable Long id, @RequestBody TecnologiaCrearDto t, BindingResult result)
 	{
 		if(result.hasErrors())
 		{

@@ -1,5 +1,6 @@
 package com.microservicio.app.test.backend.service;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.microservicio.app.test.backend.dto.TecnologiaCrearDto;
 import com.microservicio.app.test.backend.dto.TecnologiaDto;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 import com.microservicio.app.test.backend.repository.TecnologiaRepository;
@@ -24,16 +26,17 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	public List<TecnologiaDto> findAll() {
 
 		List<Tecnologia> tecnologias = repo.findAll();
-		return tecnologias.stream().map(t -> new TecnologiaDto(t.getNombre(),t.getVersion())).collect(Collectors.toList()); 
-
+		
+        return tecnologias.stream().map(t -> new TecnologiaDto(t.getId(), t.getNombre(),t.getVersion())).collect(Collectors.toList());
+        
 	}
 
 	@Override
 	public TecnologiaDto findByNombre(String nombre) {
 
-		Optional<TecnologiaDto> tecnologia = repo.findByNombre(nombre).map(t -> new TecnologiaDto(t.getNombre(), t.getVersion()));
+		Optional<TecnologiaDto> tecnologia = repo.findByNombre(nombre).map(t -> new TecnologiaDto(t.getId(), t.getNombre(), t.getVersion()));
 		if (tecnologia.isEmpty()) {
-			throw new NoSuchElementException("No existe tecnologia con el nombre: " + nombre);
+			throw new NoSuchElementException("No existe tecnologia con el nombre: " + nombre);  
 		}
 
 		return tecnologia.get();
@@ -41,22 +44,24 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	}
 
 	@Override
-	public Tecnologia addTecnologia(Tecnologia tecnologia) {
+	public TecnologiaDto addTecnologia(TecnologiaCrearDto tecnologia) {
 
 		if (tecnologia.getVersion() < 1) {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
 		}
+		
+		Tecnologia t= tecnologia.toTecnologia();
 
-		if (repo.exists(Example.of(tecnologia))) {
+		if (repo.exists(Example.of(t))) {
 			throw new DuplicateKeyException(
 					"Ya existe la tecnologia y version: " + tecnologia.getNombre() + " " + tecnologia.getVersion());
 		}
-
-		return repo.save(tecnologia);
+ 
+		return new TecnologiaDto(repo.save(tecnologia.toTecnologia())); 
 	}
 
 	@Override
-	public Tecnologia updateTecnologia(Long id, Tecnologia tecnologia) {
+	public TecnologiaDto updateTecnologia(Long id, TecnologiaCrearDto tecnologia) {
 
 		if (tecnologia.getVersion() < 1) {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
@@ -66,8 +71,10 @@ public class TecnologiaServiceImple implements TecnologiaService {
 
 		t.setNombre(tecnologia.getNombre());
 		t.setVersion(tecnologia.getVersion());
+		
+		return new TecnologiaDto(repo.save(tecnologia.toTecnologia())); 
 
-		return repo.save(t);
+		
 	}
 
 	@Override

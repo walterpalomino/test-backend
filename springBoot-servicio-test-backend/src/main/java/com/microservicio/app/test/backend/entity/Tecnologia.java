@@ -14,8 +14,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "tecnologia")
@@ -33,6 +34,12 @@ public class Tecnologia {
 	@Column(nullable = false)
 	@NotNull(message = "la version de la tecnologia no puede ser null")
 	private Integer version;
+	
+	public Tecnologia(String nombre, Integer version)
+	{
+		this.nombre = nombre;
+		this.version = version;
+	}
 	
 	/*
 	 * @OneToMany(mappedBy = "tecnologia", fetch = FetchType.EAGER)

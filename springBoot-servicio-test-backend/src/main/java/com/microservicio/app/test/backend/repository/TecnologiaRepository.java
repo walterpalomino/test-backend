@@ -9,7 +9,6 @@ import com.microservicio.app.test.backend.entity.Tecnologia;
 
 @Repository
 public interface TecnologiaRepository extends JpaRepository<Tecnologia, Long> {
-
 	
 	public Optional<Tecnologia> findByNombre(String name);
 	

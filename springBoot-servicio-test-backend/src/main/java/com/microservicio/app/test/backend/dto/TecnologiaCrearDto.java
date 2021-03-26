@@ -7,29 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-
-public class TecnologiaDto {
+public class TecnologiaCrearDto {
 	
 	private Long id;
 	private String nombre;
 	private Integer version;
 	
-	
-	
-	  public TecnologiaDto(String nombre, Integer version) {
-	  
-	  this.nombre = nombre; this.version = version;
-	  
-	  } 
-	 
-	
-	public TecnologiaDto(Tecnologia t)
+	public Tecnologia toTecnologia()
 	{
-		this.nombre = t.getNombre();
-		this.version = t.getVersion();
+		return new Tecnologia(null,this.getNombre(),this.getVersion()); 
 	}
 
-	
 }

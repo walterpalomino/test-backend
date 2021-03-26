@@ -22,8 +22,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter 
 @AllArgsConstructor @NoArgsConstructor
 @Entity
 @Table(name = "candidato")
@@ -53,17 +54,19 @@ public class Candidato {
 	@Size(min = 8, message = "El numero de documento debe tener minimo 4 caracteres")
 	private String numDocumento;
 	
-	@OneToMany(mappedBy = "candidato", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
-	@JsonManagedReference 
-	private List<CandidatoExperiencia> experiencia;
+	
+	/*
+	 * @OneToMany(mappedBy = "candidato", cascade = CascadeType.REMOVE,
+	 * orphanRemoval = true, fetch = FetchType.LAZY) //@JsonManagedReference private
+	 * List<CandidatoExperiencia> experiencia;
+	 */
+	 
 
-	public Candidato(String nombre, String apellido, TipoDocumento tipo, String numDocumento) {
-		super();
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.tipo = tipo;
-		this.numDocumento = numDocumento;
-	}
+	/*
+	 * public Candidato(String nombre, String apellido, TipoDocumento tipo, String
+	 * numDocumento) { super(); this.nombre = nombre; this.apellido = apellido;
+	 * this.tipo = tipo; this.numDocumento = numDocumento; }
+	 */
 	
 	
 	

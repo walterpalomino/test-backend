@@ -17,8 +17,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
 @Entity
 @Table(name = "candidato_experiencia")
@@ -31,7 +32,7 @@ public class CandidatoExperiencia {
 	@NotNull(message = "el candidato no puede ser null")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "candidato")
-	@JsonBackReference
+	//@JsonBackReference
 	private Candidato candidato;
 	
 	@NotNull(message = "la tecnologia no puede ser null")
@@ -54,9 +55,6 @@ public class CandidatoExperiencia {
 		this.tecnologia = tecnologia;
 		this.experiencia = experiencia;
 	}
-	
-	
-	
-	
+		
 
 }

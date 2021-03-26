@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.microservicio.app.test.backend.dto.CandidatoDto;
 import com.microservicio.app.test.backend.entity.Candidato;
 import com.microservicio.app.test.backend.exception.InvalidDataException;
 import com.microservicio.app.test.backend.service.CandidatoService;
@@ -29,7 +30,7 @@ public class CandidatoController {
 	private CandidatoService servicio;
 
 	@GetMapping("/listado-candidato")
-	private ResponseEntity<List<Candidato>> listaCandidato() {
+	private ResponseEntity<List<CandidatoDto>> listaCandidato() {
 
 		return ResponseEntity.ok(servicio.findAll());
 
