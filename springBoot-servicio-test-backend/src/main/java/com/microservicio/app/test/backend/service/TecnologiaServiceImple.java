@@ -1,6 +1,5 @@
 package com.microservicio.app.test.backend.service;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -67,14 +66,9 @@ public class TecnologiaServiceImple implements TecnologiaService {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
 		}
 
-		Tecnologia t = repo.findById(id).get();
-
-		t.setNombre(tecnologia.getNombre());
-		t.setVersion(tecnologia.getVersion());
-		
+		tecnologia.setId(id); 		
 		return new TecnologiaDto(repo.save(tecnologia.toTecnologia())); 
 
-		
 	}
 
 	@Override

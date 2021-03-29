@@ -2,10 +2,14 @@ package com.microservicio.app.test.backend.service;
 
 import java.util.List;
 
-import com.microservicio.app.test.backend.entity.CandidatoExperiencia;
+import com.microservicio.app.test.backend.dto.CandidatoExperienciaCrearDto;
+import com.microservicio.app.test.backend.dto.CandidatoExperienciaDto;
 
 public interface CandidatoExperienciaService {
 	
-	public List<CandidatoExperiencia> findByTecnologia(String nombre);
-
+	public List<CandidatoExperienciaDto> findAll();
+	public List<CandidatoExperienciaDto> findByTecnologia(String nombre);
+	public CandidatoExperienciaDto addCandidatoExperiencia(CandidatoExperienciaCrearDto c);
+	public CandidatoExperienciaDto updateCandidatoExperiencia(Long id, CandidatoExperienciaCrearDto crearExperiencia);
+	public void deleteCandidatoExperiencia(Long id);
 }

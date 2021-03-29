@@ -18,7 +18,7 @@ public class TecnologiaCrearDto {
 	
 	public Tecnologia toTecnologia()
 	{
-		return new Tecnologia(null,this.getNombre(),this.getVersion()); 
+		return new Tecnologia(this.getId(),this.getNombre(),this.getVersion()); 
 	}
 
 }

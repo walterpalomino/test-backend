@@ -10,6 +10,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.microservicio.app.test.backend.dto.CandidatoCrearDto;
 import com.microservicio.app.test.backend.dto.CandidatoDto;
 import com.microservicio.app.test.backend.entity.Candidato;
 import com.microservicio.app.test.backend.repository.CandidatoRepository;
@@ -32,48 +33,43 @@ public class CandidatoServiceImpl implements CandidatoService {
 	}
 
 	@Override
-	public Candidato findById(Long id) {
+	public CandidatoDto findById(Long id) {
 
-		Optional<Candidato> candidato = repo.findById(id);
+		Optional<CandidatoDto> candidato = repo.findById(id).map(c -> new CandidatoDto(c.getId(), c.getNombre(), c.getApellido(), c.getTipo() , c.getNumDocumento()));
+		
 		if (candidato.isEmpty()) {
 			throw new NoSuchElementException("No existe candidato con el id: " + id);
 		}
-
+		
 		return candidato.get();
 
 	}
 
 	@Override
-	public Candidato addCandidato(Candidato candidato) {
-
-		if (repo.exists(Example.of(candidato))) {
+	public CandidatoDto addCandidatoDto(CandidatoCrearDto candidato) {
+		
+		if (repo.exists(Example.of(candidato.toCandidato()))) {
 			throw new DuplicateKeyException("Ya existe el candidato con numero documento " + candidato.getNombre() + " "
 					+ candidato.getNumDocumento());
 		}
 
-		return repo.save(new Candidato(null, candidato.getNombre(), candidato.getApellido(), candidato.getTipo(),
-				candidato.getNumDocumento()));
+		return new CandidatoDto( repo.save(candidato.toCandidato()));
 
 	}
 
 	@Override
-	public Candidato updateCandidato(Long id, Candidato candidato) {
+	public CandidatoDto updateCandidatoDto(Long id, CandidatoCrearDto candidato) {
 
-		Candidato c = new Candidato();
-		c.setNombre(candidato.getNombre());
-		c.setApellido(candidato.getApellido());
-		c.setTipo(candidato.getTipo());
-		c.setNumDocumento(candidato.getNumDocumento());
-
-		return repo.save(c);
+		this.findById(id);
+				
+		return new CandidatoDto(repo.save(candidato.toCandidato()));
 	}
 
 	@Override
 	public void deleteCandidato(Long id) {
 
-		if (repo.findById(id).isEmpty()) {
-			throw new NoSuchElementException("No existe candidato con el id: " + id);
-		}
+		this.findById(id);
+		
 		repo.deleteById(id);
 
 	}

@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter @Getter
 public class CandidatoCrearDto {
 	
+	private Long id;
 	private String nombre;
 	private String apellido; 
 	private TipoDocumento tipo;
@@ -16,7 +17,7 @@ public class CandidatoCrearDto {
 		
 	public Candidato toCandidato()
 	{
-		return new Candidato(null, this.getNombre(), this.getApellido(), this.getTipo(),
+		return new Candidato(this.getId(), this.getNombre(), this.getApellido(), this.getTipo(),
 				this.getNumDocumento());
 	}
 
