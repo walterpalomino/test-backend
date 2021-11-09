@@ -48,10 +48,8 @@ public class TecnologiaServiceImple implements TecnologiaService {
 		if (tecnologia.getVersion() < 1) {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
 		}
-		
-		Tecnologia t= tecnologia.toTecnologia();
 
-		if (repo.exists(Example.of(t))) {
+		if (repo.exists(Example.of(tecnologia.toTecnologia()))) {
 			throw new DuplicateKeyException(
 					"Ya existe la tecnologia y version: " + tecnologia.getNombre() + " " + tecnologia.getVersion());
 		}
