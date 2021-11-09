@@ -60,8 +60,7 @@ public class CandidatoServiceImpl implements CandidatoService {
 	@Override
 	public CandidatoDto updateCandidatoDto(Long id, CandidatoCrearDto candidato) {
 
-		this.findById(id);
-				
+		candidato.setId(this.findById(id).getId());
 		return new CandidatoDto(repo.save(candidato.toCandidato()));
 	}
 
