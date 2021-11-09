@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -50,6 +52,16 @@ class CandidatoServiceImplTest {
 
     @Test
     void findByIdTest() {
+
+        Mockito.when(candidatoRepository.findById(1l)).thenReturn(Optional.of(candidato));
+        CandidatoDto candidatoDto = candidatoService.findById(1l);
+
+        assertEquals("pepe", candidatoDto.getNombre());
+
+        assertThrows(NoSuchElementException.class, () ->{
+            candidatoService.findById(2l);
+        });
+
     }
 
     @Test
