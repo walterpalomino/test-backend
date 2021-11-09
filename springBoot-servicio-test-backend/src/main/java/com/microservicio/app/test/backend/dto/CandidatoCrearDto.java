@@ -3,10 +3,10 @@ package com.microservicio.app.test.backend.dto;
 import com.microservicio.app.test.backend.entity.Candidato;
 import com.microservicio.app.test.backend.entity.TipoDocumento;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Setter @Getter
+@Data
+@AllArgsConstructor @NoArgsConstructor
 public class CandidatoCrearDto {
 	
 	private Long id;
