@@ -39,8 +39,8 @@ public class Candidato {
 	private TipoDocumento tipo;
 	
 	@NotNull(message = "numero de documento no puede ser null")
-	@Column(name = "numero_documento") 
-	@Size(min = 8, message = "El numero de documento debe tener minimo 4 caracteres")
+	@Column(name = "numero_documento", length = 8)
+	@Size(min = 8, message = "El numero de documento debe tener 8 caracteres")
 	private String numDocumento;
 	
 
