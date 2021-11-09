@@ -19,12 +19,12 @@ import com.microservicio.app.test.backend.repository.CandidatoRepository;
 public class CandidatoServiceImpl implements CandidatoService {
 
 	@Autowired
-	private CandidatoRepository repo;
+	private CandidatoRepository candidatoRepository;
 
 	@Override
 	public List<CandidatoDto> findAll() {
 
-		List<Candidato> candidatos = repo.findAll();
+		List<Candidato> candidatos = candidatoRepository.findAll();
 
 		return candidatos.stream()
 				.map(c -> new CandidatoDto(c.getId(), c.getNombre(), c.getApellido(), c.getTipo(), c.getNumDocumento()))
@@ -35,7 +35,7 @@ public class CandidatoServiceImpl implements CandidatoService {
 	@Override
 	public CandidatoDto findById(Long id) {
 
-		Optional<CandidatoDto> candidato = repo.findById(id).map(c -> new CandidatoDto(c.getId(), c.getNombre(), c.getApellido(), c.getTipo() , c.getNumDocumento()));
+		Optional<CandidatoDto> candidato = candidatoRepository.findById(id).map(c -> new CandidatoDto(c.getId(), c.getNombre(), c.getApellido(), c.getTipo() , c.getNumDocumento()));
 		
 		if (candidato.isEmpty()) {
 			throw new NoSuchElementException("No existe candidato con el id: " + id);
@@ -48,12 +48,12 @@ public class CandidatoServiceImpl implements CandidatoService {
 	@Override
 	public CandidatoDto addCandidatoDto(CandidatoCrearDto candidato) {
 		
-		if (repo.exists(Example.of(candidato.toCandidato()))) {
+		if (candidatoRepository.exists(Example.of(candidato.toCandidato()))) {
 			throw new DuplicateKeyException("Ya existe el candidato con numero documento " + candidato.getNombre() + " "
 					+ candidato.getNumDocumento());
 		}
 
-		return new CandidatoDto( repo.save(candidato.toCandidato()));
+		return new CandidatoDto( candidatoRepository.save(candidato.toCandidato()));
 
 	}
 
@@ -61,15 +61,15 @@ public class CandidatoServiceImpl implements CandidatoService {
 	public CandidatoDto updateCandidatoDto(Long id, CandidatoCrearDto candidato) {
 
 		candidato.setId(this.findById(id).getId());
-		return new CandidatoDto(repo.save(candidato.toCandidato()));
+		return new CandidatoDto(candidatoRepository.save(candidato.toCandidato()));
 	}
 
 	@Override
 	public void deleteCandidato(Long id) {
 
 		this.findById(id);
-		
-		repo.deleteById(id);
+
+		candidatoRepository.deleteById(id);
 
 	}
 
