@@ -3,9 +3,7 @@ package com.microservicio.app.test.backend.controller;
 import java.util.List;
 
 import javax.validation.Valid;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +24,8 @@ import com.microservicio.app.test.backend.service.CandidatoService;
 
 @Controller
 @RequestMapping("/api")
+@Slf4j
 public class CandidatoController {
-
-	private static final Log log = LogFactory.getLog(CandidatoController.class);
 
 	@Autowired
 	private CandidatoService servicio;
@@ -49,7 +46,7 @@ public class CandidatoController {
 	}
 
 	@PostMapping("/crear-candidato")
-	private ResponseEntity<CandidatoDto> agregarTecnologia(@Valid @RequestBody CandidatoCrearDto c,
+	private ResponseEntity<CandidatoDto> agregarCandidato(@Valid @RequestBody CandidatoCrearDto c,
 			BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidDataException(result);
@@ -60,7 +57,7 @@ public class CandidatoController {
 	}
 
 	@PutMapping("/actualizar-candidato/{id}")
-	private ResponseEntity<CandidatoDto> actualizarCandidato(@Valid @PathVariable Long id,
+	private ResponseEntity<CandidatoDto> actualizarCandidato(@PathVariable Long id, @Valid
 			@RequestBody CandidatoCrearDto c, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidDataException(result);
