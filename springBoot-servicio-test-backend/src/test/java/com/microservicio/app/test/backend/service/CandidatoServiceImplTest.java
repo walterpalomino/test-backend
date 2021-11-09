@@ -82,6 +82,12 @@ class CandidatoServiceImplTest {
 
     @Test
     void updateCandidatoDtoTest() {
+
+        Mockito.when(candidatoRepository.findById(1l)).thenReturn(Optional.of(candidato));
+        Mockito.when(candidatoRepository.save(candidato)).thenReturn(candidato);
+        candidatoDto = candidatoService.updateCandidatoDto(1l, candidatoCrearDto);
+
+        assertEquals("pepe", candidatoDto.getNombre());
     }
 
     @Test
