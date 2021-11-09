@@ -1,5 +1,6 @@
 package com.microservicio.app.test.backend.service;
 
+import com.microservicio.app.test.backend.dto.CandidatoCrearDto;
 import com.microservicio.app.test.backend.dto.CandidatoDto;
 import com.microservicio.app.test.backend.entity.Candidato;
 import com.microservicio.app.test.backend.entity.TipoDocumento;
@@ -29,11 +30,16 @@ class CandidatoServiceImplTest {
     private CandidatoServiceImpl candidatoService;
 
     Candidato candidato;
+    CandidatoDto candidatoDto;
+    CandidatoCrearDto candidatoCrearDto;
 
     @BeforeEach
     void setUp() {
 
-        candidato = new Candidato(1l, "pepe", "perez",new TipoDocumento(1l,"DNI"),"123456789");
+        candidato = new Candidato(1l, "pepe", "perez",new TipoDocumento(1l,"DNI"),"12345678");
+        candidatoDto = null;
+        candidatoCrearDto = new CandidatoCrearDto(1l, "pepe", "perez",new TipoDocumento(1l,"DNI"),"12345678");
+
     }
 
     @Test
@@ -54,7 +60,7 @@ class CandidatoServiceImplTest {
     void findByIdTest() {
 
         Mockito.when(candidatoRepository.findById(1l)).thenReturn(Optional.of(candidato));
-        CandidatoDto candidatoDto = candidatoService.findById(1l);
+        candidatoDto = candidatoService.findById(1l);
 
         assertEquals("pepe", candidatoDto.getNombre());
 
@@ -66,6 +72,12 @@ class CandidatoServiceImplTest {
 
     @Test
     void addCandidatoDtoTest() {
+
+        Mockito.when(candidatoRepository.save(candidato)).thenReturn(candidato);
+        candidatoDto = candidatoService.addCandidatoDto(candidatoCrearDto);
+
+        assertEquals("pepe", candidatoDto.getNombre());
+
     }
 
     @Test
