@@ -19,12 +19,12 @@ import com.microservicio.app.test.backend.repository.TecnologiaRepository;
 public class TecnologiaServiceImple implements TecnologiaService {
 
 	@Autowired
-	private TecnologiaRepository repo;
+	private TecnologiaRepository tecnologiaRepository;
 
 	@Override
 	public List<TecnologiaDto> findAll() {
 
-		List<Tecnologia> tecnologias = repo.findAll();
+		List<Tecnologia> tecnologias = tecnologiaRepository.findAll();
 		
         return tecnologias.stream().map(t -> new TecnologiaDto(t.getId(), t.getNombre(),t.getVersion())).collect(Collectors.toList());
         
@@ -33,7 +33,7 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	@Override
 	public TecnologiaDto findByNombre(String nombre) {
 
-		Optional<TecnologiaDto> tecnologia = repo.findByNombre(nombre).map(t -> new TecnologiaDto(t.getId(), t.getNombre(), t.getVersion()));
+		Optional<TecnologiaDto> tecnologia = tecnologiaRepository.findByNombre(nombre).map(t -> new TecnologiaDto(t.getId(), t.getNombre(), t.getVersion()));
 		if (tecnologia.isEmpty()) {
 			throw new NoSuchElementException("No existe tecnologia con el nombre: " + nombre);  
 		}
@@ -49,12 +49,12 @@ public class TecnologiaServiceImple implements TecnologiaService {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
 		}
 
-		if (repo.exists(Example.of(tecnologia.toTecnologia()))) {
+		if (tecnologiaRepository.exists(Example.of(tecnologia.toTecnologia()))) {
 			throw new DuplicateKeyException(
 					"Ya existe la tecnologia y version: " + tecnologia.getNombre() + " " + tecnologia.getVersion());
 		}
  
-		return new TecnologiaDto(repo.save(tecnologia.toTecnologia())); 
+		return new TecnologiaDto(tecnologiaRepository.save(tecnologia.toTecnologia()));
 	}
 
 	@Override
@@ -65,18 +65,18 @@ public class TecnologiaServiceImple implements TecnologiaService {
 		}
 
 		tecnologia.setId(id); 		
-		return new TecnologiaDto(repo.save(tecnologia.toTecnologia())); 
+		return new TecnologiaDto(tecnologiaRepository.save(tecnologia.toTecnologia()));
 
 	}
 
 	@Override
 	public void deleteTecnologia(Long id) {
 		
-		if (repo.findById(id).isEmpty()) {
+		if (tecnologiaRepository.findById(id).isEmpty()) {
 			throw new NoSuchElementException("No existe tecnologia con el id: " + id);
 		}
-	
-		repo.deleteById(id);
+
+		tecnologiaRepository.deleteById(id);
 
 	}
 
