@@ -33,7 +33,7 @@ class TecnologiaServiceImpleTest {
     private TecnologiaDto tecnologiaDto;
     private static final String NOMBRE_TECNOLOGIA_PYTHON = "python";
     private static final String NOMBRE_TECNOLOGIA_JAVA = "java";
-    private static final int LENGTH_LISTA = 1;
+    private static final long NUMBER_ONE = 1L;
     private TecnologiaCrearDto tecnologiaCrearDto;
 
     @BeforeEach
@@ -51,7 +51,7 @@ class TecnologiaServiceImpleTest {
         when(tecnologiaRepository.findAll()).thenReturn(tecnologias);
         List<TecnologiaDto> listaTecnologia = tecnologiaService.findAll();
 
-        assertEquals(LENGTH_LISTA, listaTecnologia.size());
+        assertEquals(NUMBER_ONE, listaTecnologia.size());
     }
 
     @Test
@@ -84,6 +84,13 @@ class TecnologiaServiceImpleTest {
 
     @Test
     void updateTecnologiaTest() {
+
+        when(tecnologiaRepository.findById(NUMBER_ONE)).thenReturn(Optional.of(tecnologia));
+        when(tecnologiaRepository.save(tecnologia)).thenReturn(tecnologia);
+        tecnologiaDto =  tecnologiaService.updateTecnologia(NUMBER_ONE, tecnologiaCrearDto);
+
+        assertTrue(NOMBRE_TECNOLOGIA_JAVA.equals(tecnologiaDto.getNombre()));
+
     }
 
     @Test
