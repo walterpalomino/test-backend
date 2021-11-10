@@ -91,6 +91,11 @@ class TecnologiaServiceImpleTest {
 
         assertTrue(NOMBRE_TECNOLOGIA_JAVA.equals(tecnologiaDto.getNombre()));
 
+        tecnologiaCrearDto.setVersion(0);
+        assertThrows(IllegalArgumentException.class, () ->{
+            tecnologiaService.updateTecnologia(NUMBER_ONE, tecnologiaCrearDto);
+        });
+
     }
 
     @Test
