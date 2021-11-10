@@ -31,6 +31,18 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	}
 
 	@Override
+	public Tecnologia findById(long id) {
+
+		Optional<Tecnologia> tecnologia = tecnologiaRepository.findById(id);
+
+		if (tecnologia.isEmpty()) {
+			throw new NoSuchElementException("No existe candidato con el id: " + id);
+		}
+
+		return tecnologia.get();
+	}
+
+	@Override
 	public TecnologiaDto findByNombre(String nombre) {
 
 		Optional<TecnologiaDto> tecnologia = tecnologiaRepository.findByNombre(nombre).map(t -> new TecnologiaDto(t.getId(), t.getNombre(), t.getVersion()));
@@ -59,6 +71,8 @@ public class TecnologiaServiceImple implements TecnologiaService {
 
 	@Override
 	public TecnologiaDto updateTecnologia(Long id, TecnologiaCrearDto tecnologia) {
+
+		findById(id);
 
 		if (tecnologia.getVersion() < 1) {
 			throw new IllegalArgumentException("La version debe ser mayor a cero");
