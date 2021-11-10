@@ -35,6 +35,7 @@ class TecnologiaServiceImpleTest {
     private static final String NOMBRE_TECNOLOGIA_JAVA = "java";
     private static final long NUMBER_ONE = 1L;
     private TecnologiaCrearDto tecnologiaCrearDto;
+    private static final long NUMBER_TWO = 2l;
 
     @BeforeEach
     void setUp (){
@@ -52,6 +53,18 @@ class TecnologiaServiceImpleTest {
         List<TecnologiaDto> listaTecnologia = tecnologiaService.findAll();
 
         assertEquals(NUMBER_ONE, listaTecnologia.size());
+    }
+
+    @Test
+    void findByIdTest(){
+
+        when(tecnologiaRepository.findById(NUMBER_ONE)).thenReturn(Optional.of(tecnologia));
+        tecnologia = tecnologiaService.findById(NUMBER_ONE);
+
+        assertEquals(NOMBRE_TECNOLOGIA_JAVA, tecnologia.getNombre());
+        assertThrows( NoSuchElementException.class, ()->{
+            tecnologiaService.findById(NUMBER_TWO);
+        });
     }
 
     @Test
