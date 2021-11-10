@@ -1,5 +1,6 @@
 package com.microservicio.app.test.backend.service;
 
+import com.microservicio.app.test.backend.dto.TecnologiaCrearDto;
 import com.microservicio.app.test.backend.dto.TecnologiaDto;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 import com.microservicio.app.test.backend.repository.TecnologiaRepository;
@@ -8,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -32,11 +34,13 @@ class TecnologiaServiceImpleTest {
     private static final String NOMBRE_TECNOLOGIA_PYTHON = "python";
     private static final String NOMBRE_TECNOLOGIA_JAVA = "java";
     private static final int LENGTH_LISTA = 1;
+    private TecnologiaCrearDto tecnologiaCrearDto;
 
     @BeforeEach
     void setUp (){
         tecnologia = new Tecnologia(1l, "java", 8);
         tecnologiaDto = null;
+        tecnologiaCrearDto = new TecnologiaCrearDto(1l, "java", 8);
     }
 
     @Test
@@ -65,6 +69,17 @@ class TecnologiaServiceImpleTest {
 
     @Test
     void addTecnologiaTest() {
+
+        when(tecnologiaRepository.save(tecnologia)).thenReturn(tecnologia);
+        tecnologiaDto =  tecnologiaService.addTecnologia(tecnologiaCrearDto);
+
+        assertEquals(NOMBRE_TECNOLOGIA_JAVA, tecnologiaDto.getNombre());
+
+        tecnologiaCrearDto.setVersion(0);
+        assertThrows(IllegalArgumentException.class, () ->{
+            tecnologiaService.addTecnologia(tecnologiaCrearDto);
+        });
+
     }
 
     @Test
