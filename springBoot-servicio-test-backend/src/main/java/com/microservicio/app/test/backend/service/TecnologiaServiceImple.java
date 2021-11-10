@@ -36,7 +36,7 @@ public class TecnologiaServiceImple implements TecnologiaService {
 		Optional<Tecnologia> tecnologia = tecnologiaRepository.findById(id);
 
 		if (tecnologia.isEmpty()) {
-			throw new NoSuchElementException("No existe candidato con el id: " + id);
+			throw new NoSuchElementException("No existe la tecnologia con el id: " + id);
 		}
 
 		return tecnologia.get();
@@ -86,10 +86,7 @@ public class TecnologiaServiceImple implements TecnologiaService {
 	@Override
 	public void deleteTecnologia(Long id) {
 		
-		if (tecnologiaRepository.findById(id).isEmpty()) {
-			throw new NoSuchElementException("No existe tecnologia con el id: " + id);
-		}
-
+		this.findById(id);
 		tecnologiaRepository.deleteById(id);
 
 	}
