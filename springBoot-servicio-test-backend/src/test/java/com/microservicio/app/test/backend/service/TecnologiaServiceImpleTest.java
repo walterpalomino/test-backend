@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TecnologiaServiceImpleTest {
@@ -95,5 +95,10 @@ class TecnologiaServiceImpleTest {
 
     @Test
     void deleteTecnologiaTest() {
+
+        when(tecnologiaRepository.findById(NUMBER_ONE)).thenReturn(Optional.of(tecnologia));
+        tecnologiaService.deleteTecnologia(NUMBER_ONE);
+
+        verify(tecnologiaRepository, times(1)).deleteById(NUMBER_ONE);
     }
 }
