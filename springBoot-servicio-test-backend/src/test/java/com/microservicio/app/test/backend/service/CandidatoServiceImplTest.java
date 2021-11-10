@@ -92,5 +92,9 @@ class CandidatoServiceImplTest {
 
     @Test
     void deleteCandidatoTest() {
+
+        Mockito.when(candidatoRepository.findById(1l)).thenReturn(Optional.of(candidato));
+        candidatoService.deleteCandidato(1l);
+        Mockito.verify(candidatoRepository,Mockito.times(1)).deleteById(1l);
     }
 }
