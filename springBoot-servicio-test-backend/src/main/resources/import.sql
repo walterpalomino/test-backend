@@ -18,3 +18,6 @@ insert into candidato_experiencia (candidato,tecnologia,experiencia) values (3,1
 insert into candidato_experiencia (candidato,tecnologia,experiencia) values (3,2,4);
 insert into candidato_experiencia (candidato,tecnologia,experiencia) values (3,3,1);
 insert into candidato_experiencia (candidato,tecnologia,experiencia) values (3,4,9);
+
+insert into usuario (nombre,clave) values ('juan','$2a$10$80F2qidWCjSayA5FzJz1A.U9PWUscHphARq9UU64XO1HxOxmyXKg6');
+insert into usuario (nombre,clave) values ('jimmy','$2a$10$FLnjWOM0gUJpwLrK2fZEceYgGZ1c3rwt00cxBQH9D2pnczWLo//v2');
