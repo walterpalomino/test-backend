@@ -68,7 +68,7 @@ public class CandidatoController {
 	}
 
 	@DeleteMapping("/eliminar-candidato/{id}")
-	private ResponseEntity<?> eliminarTecnologia(@PathVariable Long id) {
+	private ResponseEntity<?> eliminarCandidato(@PathVariable Long id) {
 
 		servicio.deleteCandidato(id);
 		log.info("Eliminar candidato con id " + id);
