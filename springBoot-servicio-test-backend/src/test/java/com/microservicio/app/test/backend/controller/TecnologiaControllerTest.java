@@ -76,4 +76,22 @@ class TecnologiaControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.nombre").value(NOMBRE_TECNOLOGIA_JAVA));
     }
+
+    @Test
+    @WithMockUser
+    void agregarTecnologiaTest() throws Exception {
+
+        when(tecnologiaService.addTecnologia(tecnologiaCrearDto)).thenReturn(tecnologiaDto);
+
+        mockMvc.perform(post("/api/crear-tecnologia")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tecnologiaCrearDto)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_TECNOLOGIA_JAVA));
+
+    }
+
+
 }
