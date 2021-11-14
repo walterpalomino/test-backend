@@ -68,7 +68,16 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
-    void buscarcandidatoTest() {
+    void buscarcandidatoTest() throws Exception {
+
+        List<CandidatoExperienciaDto> experiencias = new ArrayList<>();
+        experiencias.add(candidatoExperienciaDto);
+
+        when(candidatoExperienciaService.findByTecnologia("java")).thenReturn(experiencias);
+
+        mockMvc.perform(get("/api/buscar-tecnologia-candidato/{nombre}", "java").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
