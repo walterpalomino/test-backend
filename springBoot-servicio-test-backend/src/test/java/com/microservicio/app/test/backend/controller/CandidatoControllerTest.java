@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -110,5 +110,20 @@ class CandidatoControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.nombre").value(NOMBRE_CANDIDATO));
+    }
+
+    @Test
+    @WithMockUser
+    void eliminarCandidatoTest() throws Exception {
+
+        mockMvc.perform(delete("/api/eliminar-candidato/{id}", NUMBER_ONE)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(candidatoService, times(1)).deleteCandidato(NUMBER_ONE);
+
+
+
     }
 }
