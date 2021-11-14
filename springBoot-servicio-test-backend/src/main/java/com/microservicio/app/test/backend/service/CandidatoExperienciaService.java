@@ -12,4 +12,5 @@ public interface CandidatoExperienciaService {
 	public CandidatoExperienciaDto addCandidatoExperiencia(CandidatoExperienciaCrearDto c);
 	public CandidatoExperienciaDto updateCandidatoExperiencia(Long id, CandidatoExperienciaCrearDto crearExperiencia);
 	public void deleteCandidatoExperiencia(Long id);
+	public void deleteCandidato(Long id);
 }
