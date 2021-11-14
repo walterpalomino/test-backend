@@ -78,6 +78,10 @@ class CandidatoExperienciaServiceImpleTest {
 
     @Test
     void deleteCandidatoExperienciaTest() {
+
+        when(candidatoExperienciaRepository.findById(1l)).thenReturn(Optional.of(candidatoExperiencia));
+        candidatoExperienciaService.deleteCandidatoExperiencia(1l);
+        verify(candidatoExperienciaRepository, times(1)).deleteById(1l);
     }
 
     @Test
