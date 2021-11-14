@@ -1,5 +1,7 @@
 package com.microservicio.app.test.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservicio.app.test.backend.dto.CandidatoCrearDto;
 import com.microservicio.app.test.backend.dto.CandidatoDto;
 import com.microservicio.app.test.backend.entity.TipoDocumento;
@@ -12,6 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -34,7 +38,10 @@ class CandidatoControllerTest {
     @MockBean
     private UserServiceImpl userService;
 
+    ObjectMapper objectMapper;
+
     private CandidatoDto candidatoDto;
+    private CandidatoCrearDto candidatoCrearDto;
 
     private static final long NUMBER_ONE = 1l;
     private static final String NOMBRE_CANDIDATO = "pepe";
@@ -43,6 +50,9 @@ class CandidatoControllerTest {
     void setUp() {
 
         candidatoDto = new CandidatoDto(1l, NOMBRE_CANDIDATO, "perez",new TipoDocumento(1l,"DNI"),"12345678");
+        candidatoCrearDto = new CandidatoCrearDto(1l, NOMBRE_CANDIDATO, "perez",new TipoDocumento(1l,"DNI"),"12345678");
+
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -70,4 +80,22 @@ class CandidatoControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.nombre").value(NOMBRE_CANDIDATO));
     }
+
+    @Test
+    @WithMockUser
+    void agregarCandidatoTest() throws Exception {
+
+        when(candidatoService.addCandidatoDto(candidatoCrearDto)).thenReturn(candidatoDto);
+
+        mockMvc.perform(post("/api/crear-candidato")
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(candidatoCrearDto)))
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_CANDIDATO));
+
+    }
+
+    
 }
