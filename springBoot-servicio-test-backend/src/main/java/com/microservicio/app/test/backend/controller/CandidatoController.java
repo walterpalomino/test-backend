@@ -39,7 +39,7 @@ public class CandidatoController {
 	}
 
 	@GetMapping("/buscar-candidato/{id}")
-	private ResponseEntity<CandidatoDto> budcarTecnologia(@PathVariable Long id) {
+	private ResponseEntity<CandidatoDto> buscarCandidato(@PathVariable Long id) {
 
 		log.info("Buscando candidato con id " + id);
 		return ResponseEntity.ok(servicio.findById(id));
