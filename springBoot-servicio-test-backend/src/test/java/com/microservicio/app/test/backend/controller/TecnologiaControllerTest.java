@@ -65,4 +65,15 @@ class TecnologiaControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    @Test
+    @WithMockUser
+    void budcarTecnologia() throws Exception {
+
+        when(tecnologiaService.findByNombre("java")).thenReturn(tecnologiaDto);
+
+        mockMvc.perform(get("/api/buscar/{nombre}",NOMBRE_TECNOLOGIA_JAVA).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_TECNOLOGIA_JAVA));
+    }
 }
