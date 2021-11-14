@@ -11,5 +11,6 @@ import com.microservicio.app.test.backend.entity.Tecnologia;
 @Repository
 public interface CandidatoExperienciaRepository extends JpaRepository<CandidatoExperiencia, Long> {
 
-	public List<CandidatoExperiencia> findByTecnologia(Tecnologia t); 
+	public List<CandidatoExperiencia> findByTecnologia(Tecnologia t);
+	public List<CandidatoExperiencia> findByCandidato(long id);
 }
