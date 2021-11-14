@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor @NoArgsConstructor
@@ -17,4 +18,7 @@ public class Usuario {
     private Long id;
     private String nombre;
     private String clave;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 }
