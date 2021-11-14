@@ -57,6 +57,13 @@ class CandidatoExperienciaServiceImpleTest {
 
     @Test
     void findAllTest() {
+
+        List<CandidatoExperiencia> candidatos = new ArrayList<>();
+        candidatos.add(candidatoExperiencia);
+
+        when(candidatoExperienciaRepository.findAll()).thenReturn(candidatos);
+
+        assertEquals(1, candidatoExperienciaService.findAll().size());
     }
 
     @Test
