@@ -1,6 +1,8 @@
 package com.microservicio.app.test.backend.controller;
 
+import com.microservicio.app.test.backend.dto.CandidatoCrearDto;
 import com.microservicio.app.test.backend.dto.CandidatoDto;
+import com.microservicio.app.test.backend.entity.TipoDocumento;
 import com.microservicio.app.test.backend.service.CandidatoService;
 import com.microservicio.app.test.backend.service.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,8 +34,15 @@ class CandidatoControllerTest {
     @MockBean
     private UserServiceImpl userService;
 
+    private CandidatoDto candidatoDto;
+
+    private static final long NUMBER_ONE = 1l;
+    private static final String NOMBRE_CANDIDATO = "pepe";
+
     @BeforeEach
     void setUp() {
+
+        candidatoDto = new CandidatoDto(1l, NOMBRE_CANDIDATO, "perez",new TipoDocumento(1l,"DNI"),"12345678");
     }
 
     @Test
@@ -41,11 +50,24 @@ class CandidatoControllerTest {
     void listaCandidatoTest() throws Exception {
 
         List<CandidatoDto> candidatos = new ArrayList<>();
+        candidatos.add(candidatoDto);
         when(candidatoService.findAll()).thenReturn(candidatos);
 
         mockMvc.perform(get("/api/listado-candidato").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
+    }
+
+    @Test
+    @WithMockUser
+    void buscarCandidatoTest() throws Exception {
+
+        when(candidatoService.findById(NUMBER_ONE)).thenReturn(candidatoDto);
+
+        mockMvc.perform(get("/api//buscar-candidato/{id}", NUMBER_ONE).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_CANDIDATO));
     }
 }
