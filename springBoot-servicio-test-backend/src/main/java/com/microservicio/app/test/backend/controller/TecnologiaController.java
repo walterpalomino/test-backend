@@ -61,7 +61,7 @@ public class TecnologiaController {
 	}
 
 	@PutMapping("/actualizar-tecnologia/{id}")
-	private ResponseEntity<TecnologiaDto> actualizarTecnologia(@Valid @PathVariable Long id,
+	private ResponseEntity<TecnologiaDto> actualizarTecnologia(@PathVariable @Valid Long id,
 			@RequestBody TecnologiaCrearDto t, BindingResult result) {
 		if (result.hasErrors()) {
 			throw new InvalidDataException(result);
