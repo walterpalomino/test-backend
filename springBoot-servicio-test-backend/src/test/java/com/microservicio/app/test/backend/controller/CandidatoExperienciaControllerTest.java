@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -62,6 +63,7 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
+    @WithMockUser
     void listadoExperienciaTest() throws Exception {
 
         List<CandidatoExperienciaDto> experiencias = new ArrayList<>();
@@ -74,6 +76,7 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
+    @WithMockUser
     void buscarcandidatoTest() throws Exception {
 
         List<CandidatoExperienciaDto> experiencias = new ArrayList<>();
@@ -87,6 +90,7 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
+    @WithMockUser
     void addExperienciaCandidatoTest() throws Exception {
 
         when(candidatoExperienciaService.addCandidatoExperiencia(candidatoExperienciaCrearDto)).thenReturn(candidatoExperienciaDto);
@@ -102,6 +106,7 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
+    @WithMockUser
     void actualizarExperienciaCandidatoTest() throws Exception {
 
         when(candidatoExperienciaService.updateCandidatoExperiencia(1l, candidatoExperienciaCrearDto)).thenReturn(candidatoExperienciaDto);
@@ -117,6 +122,14 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
-    void eleiminarExperienciaTest() {
+    @WithMockUser
+    void eleiminarExperienciaTest() throws Exception {
+
+        mockMvc.perform(delete("/api/eleiminar-experiencia/{id}", 1l)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf()))
+                .andExpect(status().isOk());
+
+        verify(candidatoExperienciaService, times(1)).deleteCandidatoExperiencia(1l);
     }
 }
