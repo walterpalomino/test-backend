@@ -18,9 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class CandidatoExperienciaServiceImpleTest {
@@ -68,6 +69,11 @@ class CandidatoExperienciaServiceImpleTest {
 
     @Test
     void updateCandidatoExperienciaTest() {
+
+        when(candidatoExperienciaRepository.findById(1l)).thenReturn(Optional.of(candidatoExperiencia));
+        when(candidatoExperienciaRepository.save(candidatoExperiencia)).thenReturn(candidatoExperiencia);
+
+        assertEquals(5, candidatoExperienciaService.updateCandidatoExperiencia(1l, candidatoExperienciaCrearDto).getExperiencia());
     }
 
     @Test
