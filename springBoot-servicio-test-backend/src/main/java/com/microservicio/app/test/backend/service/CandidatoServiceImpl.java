@@ -71,9 +71,10 @@ public class CandidatoServiceImpl implements CandidatoService {
 	@Override
 	public void deleteCandidato(Long id) {
 
-		this.findById(id);
+		CandidatoDto candidatoDto = this.findById(id);
+		Candidato candidato = new Candidato(candidatoDto.getId(), candidatoDto.getNombre(), candidatoDto.getApellido(), candidatoDto.getTipo(), candidatoDto.getNumDocumento());
 
-		candidatoExperienciaService.deleteCandidato(id);
+		candidatoExperienciaService.deleteCandidato(candidato);
 		candidatoRepository.deleteById(id);
 
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import com.microservicio.app.test.backend.entity.Candidato;
 import com.microservicio.app.test.backend.entity.CandidatoExperiencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -90,9 +91,9 @@ public class CandidatoExperienciaServiceImple implements CandidatoExperienciaSer
 	}
 
 	@Override
-	public void deleteCandidato(Long id) {
+	public void deleteCandidato(Candidato candidato) {
 
-		List<CandidatoExperiencia> listaCandidato = repo.findByCandidato(id);
+		List<CandidatoExperiencia> listaCandidato = repo.findByCandidato(candidato);
 		repo.deleteAll(listaCandidato);
 	}
 
