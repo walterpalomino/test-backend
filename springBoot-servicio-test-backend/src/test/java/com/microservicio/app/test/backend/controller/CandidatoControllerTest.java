@@ -97,5 +97,18 @@ class CandidatoControllerTest {
 
     }
 
-    
+    @Test
+    @WithMockUser
+    void actualizarCandidatoTest() throws Exception {
+
+        when(candidatoService.updateCandidatoDto(NUMBER_ONE ,candidatoCrearDto)).thenReturn(candidatoDto);
+
+        mockMvc.perform(put("/api/actualizar-candidato/{id}", NUMBER_ONE)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(candidatoCrearDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_CANDIDATO));
+    }
 }
