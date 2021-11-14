@@ -15,9 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,6 +56,12 @@ class CandidatoExperienciaServiceImpleTest {
         candidatoExperienciaDto = candidatoExperienciaService.addCandidatoExperiencia(candidatoExperienciaCrearDto);
 
         assertEquals(5, candidatoExperienciaDto.getExperiencia());
+
+        candidatoExperienciaCrearDto.setExperiencia(0);
+
+        assertThrows(IllegalArgumentException.class, ()->{
+            candidatoExperienciaService.addCandidatoExperiencia(candidatoExperienciaCrearDto);
+        });
     }
 
     @Test
@@ -74,6 +82,16 @@ class CandidatoExperienciaServiceImpleTest {
         when(candidatoExperienciaRepository.save(candidatoExperiencia)).thenReturn(candidatoExperiencia);
 
         assertEquals(5, candidatoExperienciaService.updateCandidatoExperiencia(1l, candidatoExperienciaCrearDto).getExperiencia());
+
+        assertThrows( NoSuchElementException.class, ()->{
+            candidatoExperienciaService.updateCandidatoExperiencia(2l, candidatoExperienciaCrearDto);
+        });
+
+        candidatoExperienciaCrearDto.setExperiencia(0);
+
+        assertThrows( IllegalArgumentException.class, ()->{
+            candidatoExperienciaService.updateCandidatoExperiencia(1l, candidatoExperienciaCrearDto);
+        });
     }
 
     @Test
@@ -82,9 +100,21 @@ class CandidatoExperienciaServiceImpleTest {
         when(candidatoExperienciaRepository.findById(1l)).thenReturn(Optional.of(candidatoExperiencia));
         candidatoExperienciaService.deleteCandidatoExperiencia(1l);
         verify(candidatoExperienciaRepository, times(1)).deleteById(1l);
+
+        assertThrows(NoSuchElementException.class, ()->{
+            candidatoExperienciaService.deleteCandidatoExperiencia(2l);
+        });
     }
 
     @Test
     void deleteCandidatoTest() {
+
+        List<CandidatoExperiencia> candidatos = new ArrayList<>();
+        candidatos.add(candidatoExperiencia);
+
+        when(candidatoExperienciaRepository.findByCandidato(candidato)).thenReturn(candidatos);
+        candidatoExperienciaService.deleteCandidato(candidato);
+
+        verify(candidatoExperienciaRepository, times(1)).deleteAll(candidatos);
     }
 }
