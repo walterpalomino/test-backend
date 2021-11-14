@@ -1,5 +1,7 @@
 package com.microservicio.app.test.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservicio.app.test.backend.dto.CandidatoExperienciaCrearDto;
 import com.microservicio.app.test.backend.dto.CandidatoExperienciaDto;
 import com.microservicio.app.test.backend.entity.Candidato;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
@@ -44,6 +47,8 @@ class CandidatoExperienciaControllerTest {
     private Tecnologia tecnologia;
     private CandidatoExperienciaCrearDto candidatoExperienciaCrearDto;
 
+    private ObjectMapper objectMapper;
+
     @BeforeEach
     void setUp() {
 
@@ -53,6 +58,7 @@ class CandidatoExperienciaControllerTest {
         candidatoExperiencia = new CandidatoExperiencia(1l, candidato, tecnologia, 5);
         candidatoExperienciaCrearDto = new CandidatoExperienciaCrearDto(1l, candidato, tecnologia, 5);
 
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -81,7 +87,18 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
-    void addExperienciaCandidatoTest() {
+    void addExperienciaCandidatoTest() throws Exception {
+
+        when(candidatoExperienciaService.addCandidatoExperiencia(candidatoExperienciaCrearDto)).thenReturn(candidatoExperienciaDto);
+
+        mockMvc.perform(post("/api/crearExperiencia")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(objectMapper.writeValueAsString(candidatoExperienciaCrearDto)))
+
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.experiencia").value(5));
     }
 
     @Test
