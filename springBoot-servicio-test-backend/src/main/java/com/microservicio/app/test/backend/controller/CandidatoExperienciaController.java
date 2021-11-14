@@ -25,7 +25,7 @@ import com.microservicio.app.test.backend.exception.InvalidDataException;
 import com.microservicio.app.test.backend.service.CandidatoExperienciaService;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api/")
 public class CandidatoExperienciaController {
 	
 	private static final Log log = LogFactory.getLog(CandidatoExperienciaController.class);
@@ -48,7 +48,7 @@ public class CandidatoExperienciaController {
 		
 	} 
 	
-	@PostMapping("crearExperiencia")
+	@PostMapping("/crearExperiencia")
 	public ResponseEntity<CandidatoExperienciaDto> addExperienciaCandidato(@Valid @RequestBody CandidatoExperienciaCrearDto crearCandidatoExperiencia, BindingResult result)
 	{
 		if(result.hasErrors())
@@ -61,7 +61,7 @@ public class CandidatoExperienciaController {
 	}
 	
 	@PutMapping("/actualizar-experiencia/{id}")
-	public ResponseEntity<CandidatoExperienciaDto> actualizarExperienciaCandidato(@Valid @PathVariable Long id, @RequestBody CandidatoExperienciaCrearDto crearCandidatoExperiencia, BindingResult result)
+	public ResponseEntity<CandidatoExperienciaDto> actualizarExperienciaCandidato(@PathVariable Long id, @Valid @RequestBody CandidatoExperienciaCrearDto crearCandidatoExperiencia, BindingResult result)
 	{
 		if(result.hasErrors())
 		{
