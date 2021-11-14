@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import com.microservicio.app.test.backend.entity.CandidatoExperiencia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
@@ -84,10 +85,16 @@ public class CandidatoExperienciaServiceImple implements CandidatoExperienciaSer
 			throw new NoSuchElementException("No existe candidato experiencia con el id: " + id);
 		}
 		
-		repo.deleteById(id);		
+		repo.deleteById(id);
 		
 	}
-	
-	
+
+	@Override
+	public void deleteCandidato(Long id) {
+
+		List<CandidatoExperiencia> listaCandidato = repo.findByCandidato(id);
+		repo.deleteAll(listaCandidato);
+	}
+
 
 }
