@@ -102,7 +102,18 @@ class CandidatoExperienciaControllerTest {
     }
 
     @Test
-    void actualizarExperienciaCandidatoTest() {
+    void actualizarExperienciaCandidatoTest() throws Exception {
+
+        when(candidatoExperienciaService.updateCandidatoExperiencia(1l, candidatoExperienciaCrearDto)).thenReturn(candidatoExperienciaDto);
+
+        mockMvc.perform(put("/api/actualizar-experiencia/{id}", 1l)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .content(objectMapper.writeValueAsString(candidatoExperienciaCrearDto)))
+
+                .andExpect(status().isCreated())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.experiencia").value(5));
     }
 
     @Test
