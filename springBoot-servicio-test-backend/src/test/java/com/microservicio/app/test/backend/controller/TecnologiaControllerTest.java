@@ -69,7 +69,7 @@ class TecnologiaControllerTest {
     @WithMockUser
     void budcarTecnologia() throws Exception {
 
-        when(tecnologiaService.findByNombre("java")).thenReturn(tecnologiaDto);
+        when(tecnologiaService.findByNombre(NOMBRE_TECNOLOGIA_JAVA)).thenReturn(tecnologiaDto);
 
         mockMvc.perform(get("/api/buscar/{nombre}",NOMBRE_TECNOLOGIA_JAVA).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -109,5 +109,16 @@ class TecnologiaControllerTest {
 
     }
 
-    
+    @Test
+    @WithMockUser
+    void eliminarTecnologiaTest() throws Exception {
+
+        mockMvc.perform(delete("/api/eliminar-tecnologia/{id}", NUMBER_ONE)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(tecnologiaService, times(1)).deleteTecnologia(NUMBER_ONE);
+
+    }
 }
