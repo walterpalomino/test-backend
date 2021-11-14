@@ -5,10 +5,10 @@ import com.microservicio.app.test.backend.entity.CandidatoExperiencia;
 import com.microservicio.app.test.backend.entity.Tecnologia;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Setter @Getter
+@Data
+@AllArgsConstructor @NoArgsConstructor
 public class CandidatoExperienciaCrearDto {
 
 	private Long id;
