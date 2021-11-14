@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.microservicio.app.test.backend.repository.CandidatoExperienciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Example;
@@ -20,6 +21,9 @@ public class CandidatoServiceImpl implements CandidatoService {
 
 	@Autowired
 	private CandidatoRepository candidatoRepository;
+
+	@Autowired
+	private CandidatoExperienciaService candidatoExperienciaService;
 
 	@Override
 	public List<CandidatoDto> findAll() {
@@ -69,6 +73,7 @@ public class CandidatoServiceImpl implements CandidatoService {
 
 		this.findById(id);
 
+		candidatoExperienciaService.deleteCandidato(id);
 		candidatoRepository.deleteById(id);
 
 	}
