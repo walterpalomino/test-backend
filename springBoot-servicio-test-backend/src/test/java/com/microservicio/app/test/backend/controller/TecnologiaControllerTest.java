@@ -93,5 +93,21 @@ class TecnologiaControllerTest {
 
     }
 
+    @Test
+    @WithMockUser
+    void actualizarTecnologiaTest() throws Exception {
 
+        when(tecnologiaService.updateTecnologia(NUMBER_ONE, tecnologiaCrearDto)).thenReturn(tecnologiaDto);
+
+        mockMvc.perform(put("/api/actualizar-tecnologia/{id}", NUMBER_ONE)
+                        .with(SecurityMockMvcRequestPostProcessors.csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tecnologiaCrearDto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.nombre").value(NOMBRE_TECNOLOGIA_JAVA));
+
+    }
+
+    
 }
